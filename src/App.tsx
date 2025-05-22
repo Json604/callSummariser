@@ -1,5 +1,10 @@
-import { Text } from "react-native";
+import { ThemeProvider } from "./context/usetheme";
+import AppNavigator from "./navigation/AppNavigator";
 
 export default function App(){
-    return <Text>test</Text>
+    return(
+        <ThemeProvider>
+            <AppNavigator/>
+        </ThemeProvider>    
+    )
 }
