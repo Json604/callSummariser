@@ -1,103 +1,148 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+
+type DayKey = 'Today' | 'Yesterday' | 'Monday';
+
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  Image,
+  Dimensions,
+  ScrollView,
+} from 'react-native';
+import AnimatedLottieView from 'lottie-react-native';
 import Icon from 'react-native-vector-icons/Feather';
 
-export default function CallDetails() {
+const groupedCalls: Record<DayKey, {
+  id: string;
+  name: string;
+  type: string;
+  duration: string;
+  summary: string;
+}[]> = {
+  Today: [
+    {
+      id: '1',
+      name: 'John Smith',
+      type: 'Incoming',
+      duration: '3m 20s',
+      summary: 'Discussed onboarding strategy and deadlines.',
+    },
+  ],
+  Yesterday: [
+    {
+      id: '2',
+      name: 'Alice Brown',
+      type: 'Missed',
+      duration: '',
+      summary: 'Missed call to confirm the appointment.',
+    },
+  ],
+  Monday: [
+    {
+      id: '3',
+      name: 'Michael Johnson',
+      type: 'Outgoing',
+      duration: '5m 15s',
+      summary: 'Feedback on the design proposal.',
+    },
+  ],
+};
+
+export default function CallLogScreen() {
   return (
-    <ScrollView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.contactName}>John Smith</Text>
-        <Text style={styles.callMeta}>Incoming · 3m 20s · 2 mins ago</Text>
-      </View>
+    <View style={styles.container}>
+      {/* Background Animation */}
+      <AnimatedLottieView
+        // source={require('../assets/animated-bg.json')} // use a particles or gradient animation JSON
+        autoPlay
+        loop
+        style={styles.background}
+      />
 
-      {/* Divider */}
-      <View style={styles.divider} />
+      {/* Foreground Content */}
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <Text style={styles.title}>Call Logs</Text>
 
-      {/* AI Summary */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>🧠 AI Summary</Text>
-        <Text style={styles.sectionText}>
-          Discussed project update, deliverables, and client feedback on current progress.
-        </Text>
-      </View>
-
-      {/* Transcript */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>📝 Transcript</Text>
-        <Text style={styles.transcriptText}>
-          John: Hey, just wanted to give you a quick update on the project...
-          {'\n\n'}You: Sure, go ahead...
-          {'\n\n'}John: So, the client said they're happy with the progress...
-        </Text>
-      </View>
-
-      {/* Tags or Actions */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>📌 Tags</Text>
-        <View style={styles.tagContainer}>
-          <Text style={styles.tag}>#Project</Text>
-          <Text style={styles.tag}>#ClientFeedback</Text>
-        </View>
-      </View>
-    </ScrollView>
+        {(Object.keys(groupedCalls) as DayKey[]).map((day) => (
+          <View key={day} style={styles.dayGroup}>
+            <Text style={styles.dayTitle}>{day}</Text>
+            {groupedCalls[day].map((call) => (
+              <View key={call.id} style={styles.callCard}>
+                <View style={styles.row}>
+                  <Icon name="phone" size={18} color="#00ffae" />
+                  <Text style={styles.callName}>{call.name}</Text>
+                </View>
+                <Text style={styles.callType}>
+                  {call.type} {call.duration ? '· ' + call.duration : ''}
+                </Text>
+                <Text style={styles.callSummary}>{call.summary}</Text>
+              </View>
+            ))}
+          </View>
+        ))}
+      </ScrollView>
+    </View>
   );
 }
+
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000',
+  },
+  background: {
+    position: 'absolute',
+    width,
+    height,
+    zIndex: -1,
+  },
+  scrollContent: {
     padding: 16,
+    paddingBottom: 100,
   },
-  header: {
-    marginBottom: 12,
-  },
-  contactName: {
+  title: {
     color: '#fff',
     fontSize: 22,
-    fontWeight: 'bold',
+    fontWeight: '700',
+    marginBottom: 16,
   },
-  callMeta: {
-    color: 'grey',
-    fontSize: 14,
-    marginTop: 4,
+  dayGroup: {
+    marginBottom: 24,
   },
-  divider: {
-    borderBottomColor: '#222',
-    borderBottomWidth: 1,
-    marginVertical: 12,
-  },
-  section: {
-    marginBottom: 20,
-  },
-  sectionTitle: {
+  dayTitle: {
     color: '#A276F8',
     fontSize: 16,
     fontWeight: '600',
-    marginBottom: 6,
+    marginBottom: 8,
   },
-  sectionText: {
-    color: '#ccc',
-    fontSize: 14,
-    lineHeight: 20,
-  },
-  transcriptText: {
-    color: '#aaa',
-    fontSize: 13,
-    lineHeight: 20,
-  },
-  tagContainer: {
-    flexDirection: 'row',
-    gap: 8,
-    flexWrap: 'wrap',
-  },
-  tag: {
-    backgroundColor: '#1c1c1e',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
+  callCard: {
+    backgroundColor: '#1C1C1E',
     borderRadius: 16,
-    color: '#00ffae',
+    padding: 14,
+    marginBottom: 10,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  callName: {
+    color: '#fff',
+    fontSize: 15,
+    fontWeight: '600',
+  },
+  callType: {
+    color: 'grey',
     fontSize: 12,
+    marginTop: 4,
+  },
+  callSummary: {
+    color: '#ccc',
+    fontSize: 13,
+    marginTop: 6,
   },
 });
