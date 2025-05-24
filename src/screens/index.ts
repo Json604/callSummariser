@@ -1,3 +1,3 @@
-export {default as CallDetails} from './CallDetail';
-export {default as Home} from './Home';
-export {default as Settings} from './Settings';
+export {default as CallDetails} from './call/CallDetail';
+export {default as Home} from './home/Home';
+export {default as Settings} from './settings/Settings';
