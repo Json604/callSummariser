@@ -1,120 +1,84 @@
-import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, Switch, TouchableOpacity, ScrollView } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
+import { useContext } from "react";
+import { Image, StyleSheet, Text, View , ScrollView} from "react-native";
+import { ThemeContext } from "../../context/useTheme";
+import DynCard from "../../components/ui/dynCard";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import DeviceInfo from "react-native-device-info";
+import StatCard from "../../components/ui/StatCard";
 
-export default function ProfileScreen() {
-  const [analytics, setAnalytics] = useState(true);
-  const [playback, setPlayback] = useState(true);
+export default function Profile() {
+    const { background,text,subtext,outline,placeholderText } = useContext(ThemeContext);
+    const version:string = DeviceInfo.getVersion();
 
-  return (
-    <ScrollView style={styles.container}>
-      {/* Profile Info */}
-      <View style={styles.profileSection}>
-        <Image
-          source={{ uri: 'https://your-cdn.com/sarah-brown.png' }} // Replace with Sarah's full image URL
-          style={styles.avatar}
-        />
-        <Text style={styles.name}>Sarah Brown</Text>
-        <Text style={styles.email}>sarahbrown@example.com</Text>
-      </View>
-
-      {/* Settings Card */}
-      <View style={styles.card}>
-        {/* Profile Info Row */}
-        <TouchableOpacity style={styles.row}>
-          <Icon name="user" size={20} color="#FFFFFF" />
-          <Text style={styles.label}>Profile Information</Text>
-        </TouchableOpacity>
-
-        {/* Analytics Charts Row */}
-        <TouchableOpacity style={styles.row}>
-          <Icon name="bar-chart-2" size={20} color="#FFFFFF" />
-          <Text style={styles.label}>Analytics Charts</Text>
-        </TouchableOpacity>
-
-        {/* Toggle 1 */}
-        <View style={styles.row}>
-          <Icon name="filter" size={20} color="#FFFFFF" />
-          <Text style={styles.label}>Filter Enabled</Text>
-          <Switch value={analytics} onValueChange={setAnalytics} />
-        </View>
-
-        {/* Toggle 2 */}
-        <View style={styles.row}>
-          <Icon name="play-circle" size={20} color="#FFFFFF" />
-          <Text style={styles.label}>Playback Mode</Text>
-          <Switch value={playback} onValueChange={setPlayback} />
-        </View>
-
-        {/* Notifications */}
-        <TouchableOpacity style={styles.row}>
-          <Icon name="bell" size={20} color="#FFFFFF" />
-          <Text style={styles.label}>Notifications</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Sign Out Button */}
-      <TouchableOpacity style={styles.logout}>
-        <Text style={styles.logoutText}>Sign Out</Text>
-      </TouchableOpacity>
-    </ScrollView>
-  );
+    return (
+        <ScrollView contentContainerStyle={[styles.scrollContent, { backgroundColor: background }]}>
+            <View style={styles.page}>
+                <View style={styles.profileRow}>
+                    {/* Profile Picture */}
+                    <View style={styles.pfpWrapper}>
+                        <Image
+                            source={{uri : 'https://randomuser.me/api/portraits/women/44.jpg'}}
+                            style={styles.pfp}
+                        />
+                    </View>
+    
+                    {/* Info Card */}
+                    <DynCard style={styles.card}>
+                        <Text style={[styles.cardText , {color: text}]}>John Doe</Text>
+                        <Text style={[styles.cardSubText , {color: subtext}]}>+91 123456789</Text>
+                        <Icon name="square-edit-outline" size={24} color={subtext} style={styles.matIcon}/>
+                    </DynCard>
+                </View>
+    
+                <View>
+                    <Text style={[styles.title , {color: text}]}>Payment Methods</Text>
+                    <StatCard style={styles.itemsCard}>
+                        <Text style={[ {color: text}]}>UPI details</Text>
+                        <Icon name="chevron-right" size={24} color={text} />
+                    </StatCard>
+                    <StatCard>
+                        <Text style={[ {color: text}]}>Bank details</Text>
+                        <Icon name="chevron-right" size={24} color={text} />
+                    </StatCard>
+                </View>
+                <View style={{marginTop:16}}>
+                    <Text style={[styles.title , {color: text}]}>Others</Text>
+                    <StatCard style={styles.itemsCard}>
+                        <Text style={[ {color: text}]}>Rate us</Text>
+                        <Icon name="chevron-right" size={24} color={text} />
+                    </StatCard>
+                    <StatCard>
+                        <Text style={[ {color: text}]}>Terms & Conditions</Text>
+                        <Icon name="chevron-right" size={24} color={text} />
+                    </StatCard>
+                    <StatCard>
+                        <Text style={[ {color: text}]}>Support</Text>
+                        <Icon name="chevron-right" size={24} color={text} />
+                    </StatCard>
+                    <StatCard>
+                        <Text style={[ {color: text}]}>Logout options</Text>
+                        <Icon name="chevron-right" size={24} color={text} />
+                    </StatCard>
+                </View>
+                <View style={styles.footer}>
+                    <Text style={{color: subtext}}>App version {version}</Text>
+                </View>
+            </View>
+        </ScrollView>
+    );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#121212',
-        padding: 20,
-    },
-    profileSection: {
-        alignItems: 'center',
-        marginBottom: 30,
-    },
-    avatar: {
-        width: 100,
-        height: 100,
-        borderRadius: 50,
-        marginBottom: 10,
-    },
-    name: {
-        color: '#FFFFFF',
-        fontSize: 20,
-        fontWeight: 'bold',
-    },
-    email: {
-        color: '#B0B0B0',
-        fontSize: 16,
-    },
-    card: {
-        backgroundColor: '#1E1E1E',
-        borderRadius: 10,
-        padding: 20,
-        marginBottom: 20,
-    },
-    row: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingVertical: 15,
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: '#333333',
-    },
-    label: {
-        color: '#FFFFFF',
-        fontSize: 16,
-        flexGrow: 1,
-        marginLeft: 10,
-    },
-    logout: {
-        backgroundColor: '#FF3B30',
-        paddingVertical: 15,
-        borderRadius: 10,
-        alignItems: 'center',
-    },
-    logoutText: {
-        color: '#FFFFFF',
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-})
+    scrollContent: {flexGrow: 1,},
+    page: {flex: 1,padding: 20,},
+    profileRow: {flexDirection: 'row',alignItems: 'center',marginTop: 50,marginBottom:35,},
+    pfpWrapper: {width: 110,height: 110,marginRight: -37,zIndex: 2,elevation: 6,alignItems: 'center',justifyContent: 'center',},
+    pfp: {width: 120,height: 120,resizeMode: 'contain', },
+    card: {flex: 1,padding: 20,paddingRight:150,borderRadius: 12,elevation: 3,zIndex: 1,marginRight: 1,},
+    cardText: {fontSize: 20,marginLeft: 30,},
+    cardSubText: {fontSize: 15,marginLeft: 30,},
+    matIcon:{fontSize: 24, color: '#666',position: 'absolute',top: 30,right: 10,},
+    title: {fontSize:20,fontWeight:'bold',marginBottom:16},
+    itemsCard:{flexDirection:'row',justifyContent: "space-between",alignItems: "center",},
+    footer:{flexDirection:'row',justifyContent:'center',marginTop:30},
+});

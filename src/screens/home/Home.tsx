@@ -1,9 +1,14 @@
+import { useContext } from "react";
 import { Text, View } from "react-native";
+import { ThemeContext } from "../../context/useTheme";
 
 export default function Home(){
+
+    const {background,} = useContext(ThemeContext);
+
     return(
-        <View style={{flex: 1, display:"flex", justifyContent:'flex-start', alignItems:'center',top:'10%'}}>
-            <Text style={{color:'white', fontSize:50}}>Home details</Text>
+        <View style={{ flex:1,backgroundColor:background}}>
+            
         </View>
     )
 }

@@ -13,7 +13,7 @@ const { width } = Dimensions.get('window');
 
 export default function AppNavigator(){
     return(
-        <NavigationContainer theme={DarkTheme}>
+        <NavigationContainer >
             <Tab.Navigator 
             initialRouteName="Home"
             screenOptions={{

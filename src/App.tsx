@@ -1,4 +1,4 @@
-import { ThemeProvider } from "./context/usetheme";
+import { ThemeProvider } from "./context/useTheme";
 import AppNavigator from "./navigation/AppNavigator";
 
 export default function App(){
