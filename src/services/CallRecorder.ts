@@ -1,7 +1,7 @@
 import {NativeModules,PermissionsAndroid,Platform,ToastAndroid} from 'react-native'
 const{CallRecording}=NativeModules
 export const startRecording=async()=>{
-    if(Platform.Os!=='Android')return
+    if(Platform.OS === 'android')return
     const granted=await PermissionsAndroid.requestMultiple([
         PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
         PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE,
