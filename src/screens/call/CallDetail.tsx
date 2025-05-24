@@ -54,12 +54,6 @@ export default function CallLogScreen() {
   return (
     <View style={styles.container}>
       {/* Background Animation */}
-      <AnimatedLottieView
-        // source={require('../assets/animated-bg.json')} // use a particles or gradient animation JSON
-        autoPlay
-        loop
-        style={styles.background}
-      />
 
       {/* Foreground Content */}
       <ScrollView contentContainerStyle={styles.scrollContent}>
